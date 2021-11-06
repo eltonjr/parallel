@@ -1,4 +1,8 @@
+.PHONY: setup
+setup:
+	@go install golang.org/dl/gotip@latest
+	@gotip download
 
 .PHONY: test
 test:
-	@go test ./... -v -count=1
+	@gotip test ./... -v -count=1
