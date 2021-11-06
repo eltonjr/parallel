@@ -8,9 +8,9 @@ import (
 func TestDo(t *testing.T) {
 	payload := []string{"abduct", "abducted", "abducting", "abduction", "abductions", "abductor", "abductores", "abductors", "abducts"}
 
-	p := NewPipeline[string](payload)
-	p = Do[string, string](reverse, p)
-	result := EndPipeline[string](p)
+	p := NewPipeline(payload)
+	p = Do(reverse, p)
+	result := EndPipeline(p)
 
 	for _, r := range result {
 		fmt.Println(r)
