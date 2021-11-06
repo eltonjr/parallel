@@ -4,10 +4,10 @@ import "sync"
 
 const maxRoutines = 5
 
-// NewPipeline converts a slice of strings into a chan of strings
+// NewPipeline converts a slice of empty interfaces into a chan
 // to be used in #Do functions
-func NewPipeline(data []string) chan string {
-	c := make(chan string)
+func NewPipeline(data []interface{}) chan interface{} {
+	c := make(chan interface{})
 	go func() {
 		for _, d := range data {
 			c <- d
@@ -17,10 +17,10 @@ func NewPipeline(data []string) chan string {
 	return c
 }
 
-// Do applies a function fn to every element of the input chan in parallel
+// Do applies a pseudo-generic function fn to every element of the input chan in parallel
 // and returns another chan with its results.
-func Do(fn func(string) string, input chan string) chan string {
-	output := make(chan string)
+func Do(fn func(interface{}) interface{}, input chan interface{}) chan interface{} {
+	output := make(chan interface{})
 
 	go func() {
 		wg := sync.WaitGroup{}
@@ -40,9 +40,9 @@ func Do(fn func(string) string, input chan string) chan string {
 	return output
 }
 
-// EndPipeline collects back a chan of strings into a slice
-func EndPipeline(pipeline chan string) []string {
-	out := []string{}
+// EndPipeline collects back a chan into a slice
+func EndPipeline(pipeline chan interface{}) []interface{} {
+	out := []interface{}{}
 	for d := range pipeline {
 		out = append(out, d)
 	}

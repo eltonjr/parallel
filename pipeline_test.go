@@ -6,7 +6,7 @@ import (
 )
 
 func TestDo(t *testing.T) {
-	payload := []string{"abduct", "abducted", "abducting", "abduction", "abductions", "abductor", "abductores", "abductors", "abducts"}
+	payload := []interface{}{"abduct", "abducted", "abducting", "abduction", "abductions", "abductor", "abductores", "abductors", "abducts"}
 
 	p := NewPipeline(payload)
 	p = Do(reverse, p)
@@ -17,9 +17,11 @@ func TestDo(t *testing.T) {
 	}
 }
 
-func reverse(input string) string {
+func reverse(input interface{}) interface{} {
 	output := ""
-	for _, c := range input {
+	// the downside is that this function must cast the interface to its true value
+	strinput := input.(string)
+	for _, c := range strinput {
 		output = string(c) + output
 	}
 	return output
